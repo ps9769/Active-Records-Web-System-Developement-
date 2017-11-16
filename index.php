@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 define('DATABASE', 'pbs29');
 define('USERNAME', 'pbs29');
-define('PASSWORD', 'TRXCCmmls');
+define('PASSWORD', '2vCO8Rt4');
 define('CONNECTION', 'sql1.njit.edu');
 
 
@@ -18,7 +18,7 @@ define('CONNECTION', 'sql1.njit.edu');
            try
 	     {
                self::$db = new PDO('mysql:host=' . CONNECTION .';dbname=' .DATABASE, USERNAME, PASSWORD );
-               self::$db->setAttribute( PDO::ATTR_ERRMODe, PDO::ERRMODE_EXCEPTION );
+               self::$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
              }
 
@@ -54,9 +54,9 @@ define('CONNECTION', 'sql1.njit.edu');
 	     return $model;
 
 	  }
-	 }
+	 
 
-          static public function findAll()
+          public  function findAll()
 	  {
 	     $db = dbConn::getConnection();
 	     $tableName = get_called_class();
@@ -75,7 +75,7 @@ define('CONNECTION', 'sql1.njit.edu');
 
 
 
-   static public function findOne($id)
+   public  function findOne($id)
 	   {
 	    
             $db = dbConn::getConnection();
@@ -89,27 +89,27 @@ define('CONNECTION', 'sql1.njit.edu');
             $statement->setFetchMode(PDO::FETCH_CLASS,$class);
 	   
 	    $recordsSet  =  $statement->fetchAll();
-	     return $recordsSet[0];
+	     return $recordsSet;
 
 
 	   }
              
-
+}
 	     class accounts extends collection
 	      { 
-	         protected static $modelName='account';
+	         protected static $modelName='accounts';
 	       }
 
 
 	       class todos extends collection
 	       {
-	         protected static $modelName='todo';
+	         protected static $modelName='todos';
 	        
 		}
 
 
 
-	class model 
+      class model 
 	{
 	    protected $tableName;
 	   
@@ -126,14 +126,14 @@ define('CONNECTION', 'sql1.njit.edu');
 
 
 		    $db = dbConn::getConnection();
-		     $statement = $db->prepare($sql);
+		    $statement = $db->prepare($sql);
 	            $statement->execute();
                     $tableName = get_called_class();
 
 
-                   $array = get_object_vars($this);
-		   $columnString = implode(',', $array);
-	           $valueString = ":".implode(',:', $array);
+                    $array = get_object_vars($this);
+		    $columnString = implode(',', $array);
+	            $valueString = ":".implode(',:', $array);
      
                     echo 'I just saved record: ' . $this->id;
 		    }
@@ -163,13 +163,32 @@ define('CONNECTION', 'sql1.njit.edu');
                  {
 		   echo "I JUST DELETED RECORD". $this->id;
 		 } 
-             }
-
-
+             } 
+     
  class account extends model
 	     
   {
-  
+    public $id;
+    public $email;
+    public $fname;
+    public $lname;
+    public $phone;
+    public $birthday;
+    public $gender;
+    public $password;
+     
+       function _construct()
+      {
+        $this->tableName = 'accounts';
+        $this->id = '14';
+        $this->email = 'skr@njit.edi';
+        $this->fname = 'Sunny';
+        $this->lname = 'Jain';
+        $this->phone = '122';
+        $this->birthday = '12-12-1995';
+	$this->gender = 'Male';
+	$this->password = 'sunny';  
+      }
   
   }
 
@@ -185,20 +204,70 @@ define('CONNECTION', 'sql1.njit.edu');
         public $isdone;
 
 
-	public function_construct()
+	 function _construct()
 	{
 	   $this->tableName = 'todos';
+           $this->id = '8';
+	   $this->owneremail = 'kia@njit.edu';
+	   $this->ownerid = '7';
+	   $this->createdate = '10-08-2000';
+	   $this->duedate = '08-10-2017';
+	   $this->message = 'practise';
+	   $this->isdone = '0';
 
 	 }
 
 	 }
 
+	 class table
+	 {
+	     static	function makeTable($result)
+		{
+			echo '<table>';
+				
 
-	 $records = accounts::findAll();
-	 $records = todos::findAll();
-	 $record = todos::findOne(1);
+			foreach($result as $column)
+			{
+				echo '<tr>';
+				foreach($column as $row)
+				{
+					echo '<td>';
+					echo $row;
+					echo '</td>';
+				}
 
-         $record = new todo();
+				echo '</tr>';
+
+			}
+
+			echo '</table>';
+
+
+		}
+		
+	 }
+
+
+	 $records = accounts::create();
+         $result = $records->findAll();
+	 table::makeTable($result);
+         echo" <br>";
+	 echo" <br>";
+	 $result= $records->findOne(1);
+	 table::makeTable($result);
+         echo" <br>";
+         echo" <br>";
+	 echo" <br>";
+         $records = todos::create();
+	 $result= $records->findAll();
+	 table::makeTable($result);
+	 echo" <br>";
+	 echo" <br>";
+	 $result= $records->findOne(1);
+         table::makeTable($result);
+	 
+	 /*
+	 $record = new todo();
 	 $record->message = 'some task';
 	 $record->isdone = 0;
 
@@ -207,7 +276,7 @@ define('CONNECTION', 'sql1.njit.edu');
 	 $record = todos::create();
 	 print_r($record);
 
-
+	*/
 
 
 
