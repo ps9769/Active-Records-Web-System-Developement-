@@ -166,13 +166,13 @@ class account extends model
               public $gender= 'gender';
               public $password = 'password';
               static $tableName = 'accounts';
-              static $id = '7';
+              static $id = '8';
 
               static $data = array('srk@njit.edu','Sunny','Jain','122','1995-12-12','Male','sunny');
 
               static $columnToUpdate = 'phone';
 
-              static $newInfo ='123456789';
+              static $newInfo ='080808080';
 }
 
 
@@ -187,7 +187,7 @@ class todo extends model
                public $message = 'message';
                public $isdone = 'isdone';
                static $tableName = 'todos';
-               static $id = '32';
+               static $id = '36';
 
                static $data = array('wes@njit.edu','14','2017-11-15','2017-11-16','Its Done','0');
 
@@ -252,7 +252,7 @@ class table
          table::makeTable($result);
 
 
-         echo '<h1>Update Phone Column in Accounts Table where ID is : 7 <h1>';
+         echo '<h1>Update Phone Column in Accounts Table where ID is : 8 <h1>';
          $obj = new account;
          $obj->save();
          $records = accounts::create();
@@ -274,7 +274,7 @@ class table
          echo '<br>';
 
 
-         echo '<h1>Delete ID 32 from Todos Table <h1>';
+         echo '<h1>Delete ID 36 from Todos Table <h1>';
          $obj = new todo;
          $obj->delete();
          $records = todos::create();
